@@ -6,6 +6,7 @@ import { Playfair_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
+import { Providers } from "./providers"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -14,7 +15,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "EverAfter Logos - Wedding Logo Generator",
+  title: "EverAfter - Wedding Logo Generator",
   description: "Design your perfect wedding monogram in minutes. Personalized logos for your special day.",
   generator: "v0.app",
 }
@@ -27,7 +28,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${playfair.variable}`}>
-        <Suspense fallback={null}>{children}</Suspense>
+        <Providers>
+          <Suspense fallback={null}>{children}</Suspense>
+        </Providers>
         <Analytics />
       </body>
     </html>

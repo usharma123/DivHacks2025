@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { Sparkles } from "lucide-react"
 
 export function Hero() {
@@ -31,11 +32,8 @@ export function Hero() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Button size="lg" className="text-base px-8 py-6 h-auto font-medium">
-              Start Designing
-            </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 py-6 h-auto font-medium bg-transparent">
-              View Templates
+            <Button asChild size="lg" className="text-base px-8 py-6 h-auto font-medium">
+              <Link href="#customization">Start Designing</Link>
             </Button>
           </div>
 

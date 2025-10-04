@@ -9,6 +9,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: [
+    '@merit-systems/echo-next-sdk',
+  ],
 }
 
 export default nextConfig

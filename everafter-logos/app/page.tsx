@@ -1,7 +1,6 @@
 import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
-import { Gallery } from "@/components/gallery"
 import { CustomizationPreview } from "@/components/customization-preview"
 import { Testimonials } from "@/components/testimonials"
 import { Pricing } from "@/components/pricing"
@@ -15,7 +14,6 @@ export default function Home() {
       <main>
         <Hero />
         <Features />
-        <Gallery />
         <CustomizationPreview />
         <Testimonials />
         <Pricing />

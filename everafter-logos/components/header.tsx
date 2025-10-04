@@ -35,7 +35,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <span className="font-serif text-2xl md:text-3xl font-semibold text-primary">EverAfter Logos</span>
+            <span className="font-serif text-2xl md:text-3xl font-semibold text-primary">EverAfter</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -53,9 +53,9 @@ export function Header() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button size="lg" className="font-medium">
-              Create Your Logo
-            </Button>
+              <Button size="lg" className="font-medium" asChild>
+                <Link href="#customization">Create Your Logo</Link>
+              </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -82,8 +82,8 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Button size="lg" className="w-full font-medium">
-                Create Your Logo
+              <Button size="lg" className="w-full font-medium" asChild>
+                <Link href="#create">Create Your Logo</Link>
               </Button>
             </nav>
           </div>

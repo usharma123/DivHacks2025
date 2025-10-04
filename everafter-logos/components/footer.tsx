@@ -32,7 +32,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              <span className="font-serif text-2xl font-semibold text-primary">EverAfter Logos</span>
+              <span className="font-serif text-2xl font-semibold text-primary">EverAfter</span>
             </Link>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-sm">
               Create beautiful, personalized wedding logos in minutes. Perfect for invitations, signage, and all your
@@ -70,7 +70,7 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">© 2025 EverAfter Logos. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">© 2025 EverAfter. All rights reserved.</p>
           {/* Social Icons */}
           <div className="flex items-center gap-4">
             <Link
