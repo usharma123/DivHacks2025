@@ -8,7 +8,7 @@ const plans = [
     price: "$0/mo",
     description: "Great for getting started",
     features: [
-      "8 logo generations per week",
+      "8 logo generations per month",
       "PNG downloads",
       "Watermark preview",
       "Basic customization",
@@ -19,7 +19,7 @@ const plans = [
   },
   {
     name: "Paid",
-    price: "$5/mo",
+    price: "$10/mo",
     description: "Most popular – generous monthly limit",
     features: [
       "Up to 200 logo generations / month",
