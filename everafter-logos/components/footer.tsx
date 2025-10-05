@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Instagram, Facebook, Twitter } from "lucide-react"
+import { Linkedin } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
@@ -56,28 +56,16 @@ export function Footer() {
         {/* Bottom */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">© 2025 EverAfter. All rights reserved.</p>
-          {/* Social Icons */}
+          {/* Social Icon */}
           <div className="flex items-center gap-4">
             <Link
-              href="#"
+              href="https://www.linkedin.com/in/usharma124/"
+              target="_blank"
+              rel="noreferrer"
               className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-              aria-label="Instagram"
+              aria-label="LinkedIn"
             >
-              <Instagram size={18} />
-            </Link>
-            <Link
-              href="#"
-              className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-              aria-label="Facebook"
-            >
-              <Facebook size={18} />
-            </Link>
-            <Link
-              href="#"
-              className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-              aria-label="Twitter"
-            >
-              <Twitter size={18} />
+              <Linkedin size={18} />
             </Link>
           </div>
         </div>
