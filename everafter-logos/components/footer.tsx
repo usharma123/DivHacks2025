@@ -6,31 +6,16 @@ import { Button } from "@/components/ui/button"
 export function Footer() {
   const footerLinks = {
     Product: [
-      { label: "Templates", href: "#gallery" },
       { label: "How It Works", href: "#features" },
-      { label: "Pricing", href: "#pricing" },
-      { label: "FAQ", href: "#faq" },
-    ],
-    Company: [
-      { label: "About Us", href: "#" },
-      { label: "Contact", href: "#contact" },
-      { label: "Blog", href: "#" },
-      { label: "Careers", href: "#" },
-    ],
-    Legal: [
-      { label: "Terms of Service", href: "#" },
-      { label: "Privacy Policy", href: "#" },
-      { label: "License Agreement", href: "#" },
-      { label: "Refund Policy", href: "#" },
     ],
   }
 
   return (
     <footer id="contact" className="bg-muted/30 border-t border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8 mb-8">
           {/* Brand */}
-          <div className="lg:col-span-2">
+          <div>
             <Link href="/" className="inline-block mb-4">
               <span className="font-serif text-2xl font-semibold text-primary">EverAfter</span>
             </Link>
@@ -51,8 +36,8 @@ export function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h3 className="font-medium text-foreground mb-4">{category}</h3>
-              <ul className="space-y-3">
+              <h3 className="font-medium text-foreground mb-3">{category}</h3>
+              <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
