@@ -22,7 +22,7 @@ const plans = [
     price: "$10/mo",
     description: "Most popular – generous monthly limit",
     features: [
-      "Up to 200 logo generations / month",
+      "Up to 100 logo generations / month",
       "SVG, PNG & PDF downloads",
       "No watermark",
       "Full customization",
