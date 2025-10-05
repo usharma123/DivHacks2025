@@ -9,6 +9,7 @@ import { buildWeddingLogoPrompt } from "@/lib/utils"
 import { downloadDataUrl } from "@/lib/image-utils"
 import type { GenerateImageRequest, ImageResponse } from "@/lib/types"
 import { useEcho } from "@merit-systems/echo-next-sdk/client"
+import { Spinner } from "@/components/ui/spinner"
 
 type StyleKey = "Minimalist" | "Floral" | "Crest" | "Modern"
 
@@ -19,7 +20,7 @@ const STYLE_TO_PROMPT: Record<StyleKey, { style: "minimal" | "modern" | "ornate"
   Modern: { style: "modern" },
 }
 
-const PALETTE = ["#000000", "#FFFFFF", "#C9A227", "#0F172A", "#2563EB", "#16A34A"]
+const PALETTE = ["#000000", "#FFFFFF", "#C9A227", "#7C3AED", "#2563EB", "#16A34A"]
 
 export function CustomizationPreview() {
   const echo = useEcho()
@@ -36,6 +37,39 @@ export function CustomizationPreview() {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null)
   const [improveText, setImproveText] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [elapsedMs, setElapsedMs] = useState(0)
+  const [improvingIdx, setImprovingIdx] = useState<number | null>(null)
+  const [improveElapsedMs, setImproveElapsedMs] = useState(0)
+
+  // Simple mm:ss formatter for the loading timer
+  const formatElapsed = useCallback((ms: number) => {
+    const totalSec = Math.floor(ms / 1000)
+    const mm = String(Math.floor(totalSec / 60)).padStart(2, "0")
+    const ss = String(totalSec % 60).padStart(2, "0")
+    return `${mm}:${ss}`
+  }, [])
+
+  // Start/stop a lightweight interval while generating
+  useEffect(() => {
+    if (!isLoading) return
+    setElapsedMs(0)
+    const start = Date.now()
+    const id = setInterval(() => {
+      setElapsedMs(Date.now() - start)
+    }, 250)
+    return () => clearInterval(id)
+  }, [isLoading])
+
+  // Timer specifically for the per-image Improve flow
+  useEffect(() => {
+    if (improvingIdx == null) return
+    setImproveElapsedMs(0)
+    const start = Date.now()
+    const id = setInterval(() => {
+      setImproveElapsedMs(Date.now() - start)
+    }, 250)
+    return () => clearInterval(id)
+  }, [improvingIdx])
 
   const prompt = useMemo(() => {
     const map = STYLE_TO_PROMPT[styleKey]
@@ -132,7 +166,7 @@ export function CustomizationPreview() {
       .then(r => r.ok ? r.json() : Promise.resolve({ signedIn: false, hasToken: false }))
       .catch(() => ({ signedIn: false, hasToken: false }))
     if (!authStatus?.signedIn || !authStatus?.hasToken) return
-    setIsLoading(true)
+    setImprovingIdx(selectedIdx)
     try {
       const res = await fetch("/api/edit-image", {
         method: "POST",
@@ -146,7 +180,7 @@ export function CustomizationPreview() {
     } catch (e) {
       console.error(e)
     } finally {
-      setIsLoading(false)
+      setImprovingIdx(null)
     }
   }, [images, selectedIdx, improveText])
 
@@ -167,7 +201,7 @@ export function CustomizationPreview() {
               <CardContent className="p-8">
                 <div className="aspect-square bg-gradient-to-br from-background to-muted rounded-lg flex items-center justify-center border border-border">
                   <div className="text-center">
-                    <div className="font-serif text-6xl md:text-7xl font-bold text-primary mb-4">{initials || 'A & B'}</div>
+                    <div className="font-serif text-6xl md:text-7xl font-bold mb-4" style={{ color: primary }}>{initials || 'A & B'}</div>
                     <div className="text-sm tracking-widest text-muted-foreground mb-2">{(date || '').toUpperCase()}</div>
                     <div className="text-xs text-muted-foreground">{venue}</div>
                   </div>
@@ -227,18 +261,37 @@ export function CustomizationPreview() {
             </div>
           </div>
 
-          {/* Results grid */}
-          {images.length > 0 && (
+          {/* Results grid or loading placeholders */}
+          {(isLoading || images.length > 0) && (
             <div className="mt-10">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {images.map((url, idx) => (
-                  <button key={idx} onClick={() => setSelectedIdx(idx)} className={`relative aspect-square rounded-lg overflow-hidden border ${selectedIdx === idx ? 'border-primary ring-2 ring-primary/40' : 'border-border hover:border-primary'}`}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={url} alt={`Generated ${idx + 1}`} className="object-cover w-full h-full" />
-                  </button>
-                ))}
+                {isLoading
+                  ? Array.from({ length: 4 }).map((_, idx) => (
+                      <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-border bg-muted/30 flex items-center justify-center">
+                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                          <Spinner className="size-6" />
+                          <div className="text-xs tracking-widest uppercase">Generating…</div>
+                          <div className="text-sm font-medium tabular-nums">{formatElapsed(elapsedMs)}</div>
+                        </div>
+                      </div>
+                    ))
+                  : images.map((url, idx) => (
+                      <button key={idx} onClick={() => setSelectedIdx(idx)} className={`relative aspect-square rounded-lg overflow-hidden border ${selectedIdx === idx ? 'border-primary ring-2 ring-primary/40' : 'border-border hover:border-primary'}`}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={url} alt={`Generated ${idx + 1}`} className="object-cover w-full h-full" />
+                        {improvingIdx === idx && (
+                          <div className="absolute inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center">
+                            <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                              <Spinner className="size-6" />
+                              <div className="text-xs tracking-widest uppercase">Improving…</div>
+                              <div className="text-sm font-medium tabular-nums">{formatElapsed(improveElapsedMs)}</div>
+                            </div>
+                          </div>
+                        )}
+                      </button>
+                    ))}
               </div>
-              {selectedIdx != null && (
+              {!isLoading && selectedIdx != null && (
                 <div className="mt-6 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
                   <div className="flex gap-2">
                     <Button variant="default" onClick={downloadPng}>Download PNG</Button>

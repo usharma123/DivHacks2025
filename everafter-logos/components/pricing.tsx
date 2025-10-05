@@ -5,48 +5,33 @@ import { Check } from "lucide-react"
 const plans = [
   {
     name: "Starter",
-    price: "$19",
-    description: "Perfect for trying out the platform",
+    price: "$0/mo",
+    description: "Great for getting started",
     features: [
-      "5 template designs",
-      "1 download format (PNG)",
+      "8 logo generations per week",
+      "PNG downloads",
       "Watermark preview",
       "Basic customization",
       "Email support",
     ],
-    cta: "Try Starter",
+    cta: "Get Started",
     variant: "outline" as const,
   },
   {
-    name: "Premium",
-    price: "$49",
-    description: "Most popular for wedding couples",
+    name: "Paid",
+    price: "$5/mo",
+    description: "Most popular – generous monthly limit",
     features: [
-      "All template designs",
+      "Up to 200 logo generations / month",
       "SVG, PNG & PDF downloads",
       "No watermark",
       "Full customization",
       "Commercial print license",
       "Priority support",
     ],
-    cta: "Choose Premium",
+    cta: "Choose Paid",
     variant: "default" as const,
     popular: true,
-  },
-  {
-    name: "Studio",
-    price: "$99",
-    description: "For wedding planners & designers",
-    features: [
-      "Everything in Premium",
-      "Team collaboration (5 users)",
-      "Brand kit export",
-      "Custom font uploads",
-      "White-label option",
-      "Dedicated support",
-    ],
-    cta: "Choose Studio",
-    variant: "outline" as const,
   },
 ]
 
@@ -63,7 +48,7 @@ export function Pricing() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
             <Card
               key={index}
@@ -102,7 +87,7 @@ export function Pricing() {
 
         <div className="mt-12 text-center">
           <p className="text-sm text-muted-foreground">
-            All plans include instant access and secure checkout. No subscription required.
+            Starter plan requires no credit card. Paid plan is $5/month, cancel anytime.
           </p>
         </div>
       </div>
