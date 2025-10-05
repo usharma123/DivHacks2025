@@ -3,13 +3,15 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Sun, Moon } from "lucide-react"
 import { useEcho } from "@merit-systems/echo-next-sdk/client"
+import { useTheme } from "next-themes"
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { signIn, isLoggedIn } = useEcho()
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,18 +52,28 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Top-right: Sign In ECHO */}
+          {/* Top-right: Theme toggle + Sign In ECHO */}
           <div className="hidden md:block">
-            <Button
-              size="sm"
-              className="bg-black text-white hover:bg-black/90"
-              onClick={() => { if (!isLoggedIn) signIn() }}
-            >
-              <span className="inline-flex items-center gap-2">
-                {isLoggedIn && <span className="inline-block size-2 rounded-full bg-green-500" aria-hidden />}
-                {isLoggedIn ? 'Signed In' : 'Sign In ECHO'}
-              </span>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                size="icon"
+                variant="outline"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              >
+                {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+              </Button>
+              <Button
+                size="sm"
+                className="bg-black text-white hover:bg-black/90"
+                onClick={() => { if (!isLoggedIn) signIn() }}
+              >
+                <span className="inline-flex items-center gap-2">
+                  {isLoggedIn && <span className="inline-block size-2 rounded-full bg-green-500" aria-hidden />}
+                  {isLoggedIn ? 'Signed In' : 'Sign In ECHO'}
+                </span>
+              </Button>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -88,16 +100,26 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Button
-                size="lg"
-                className="w-full font-medium bg-black text-white hover:bg-black/90"
-                onClick={() => { setIsMobileMenuOpen(false); if (!isLoggedIn) signIn() }}
-              >
-                <span className="inline-flex items-center gap-2">
-                  {isLoggedIn && <span className="inline-block size-2 rounded-full bg-green-500" aria-hidden />}
-                  {isLoggedIn ? 'Signed In' : 'Sign In ECHO'}
-                </span>
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() => { setIsMobileMenuOpen(false); setTheme(theme === 'dark' ? 'light' : 'dark') }}
+                  aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                >
+                  {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+                </Button>
+                <Button
+                  size="lg"
+                  className="w-full font-medium bg-black text-white hover:bg-black/90"
+                  onClick={() => { setIsMobileMenuOpen(false); if (!isLoggedIn) signIn() }}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    {isLoggedIn && <span className="inline-block size-2 rounded-full bg-green-500" aria-hidden />}
+                    {isLoggedIn ? 'Signed In' : 'Sign In ECHO'}
+                  </span>
+                </Button>
+              </div>
             </nav>
           </div>
         )}
