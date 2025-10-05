@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -23,6 +23,9 @@ const PALETTE = ["#000000", "#FFFFFF", "#C9A227", "#0F172A", "#2563EB", "#16A34A
 
 export function CustomizationPreview() {
   const echo = useEcho()
+  const [isMounted, setIsMounted] = useState(false)
+  useEffect(() => setIsMounted(true), [])
+  const isLoggedIn = isMounted ? echo.isLoggedIn : false
   const [initials, setInitials] = useState("J & A")
   const [date, setDate] = useState("2025-06-15")
   const [venue, setVenue] = useState("Napa Valley")
@@ -80,7 +83,7 @@ export function CustomizationPreview() {
     } finally {
       setIsLoading(false)
     }
-  }, [echo.isLoggedIn, initials, date, venue, styleKey, primary, accent, prompt])
+  }, [isLoggedIn, initials, date, venue, styleKey, primary, accent, prompt])
 
   const downloadPng = useCallback(() => {
     if (selectedIdx == null) return
@@ -202,10 +205,10 @@ export function CustomizationPreview() {
                     </div>
                   </div>
                   <div className="pt-2 flex items-center gap-2">
-                    <Button size="lg" onClick={generate} disabled={!echo.isLoggedIn || !initials.trim() || isLoading}>
+                    <Button size="lg" onClick={generate} disabled={!isLoggedIn || !initials.trim() || isLoading}>
                       {isLoading ? 'Generating…' : 'Generate 4 Logos'}
                     </Button>
-                    {!echo.isLoggedIn && <span className="text-xs text-muted-foreground">Connect your account to generate</span>}
+                    {!isLoggedIn && <span className="text-xs text-muted-foreground">Connect your account to generate</span>}
                   </div>
                 </CardContent>
               </Card>

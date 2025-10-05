@@ -4,10 +4,12 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
+import { useEcho } from "@merit-systems/echo-next-sdk/client"
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { signIn } = useEcho()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,7 +35,7 @@ export function Header() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
+          {/* Top-left: Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <span className="font-serif text-2xl md:text-3xl font-semibold text-primary">EverAfter</span>
           </Link>
@@ -51,11 +53,11 @@ export function Header() {
             ))}
           </nav>
 
-          {/* CTA Button */}
+          {/* Top-right: Sign In ECHO */}
           <div className="hidden md:block">
-              <Button size="lg" className="font-medium" asChild>
-                <Link href="#customization">Create Your Logo</Link>
-              </Button>
+            <Button size="sm" className="bg-black text-white hover:bg-black/90" onClick={() => signIn()}>
+              Sign In ECHO
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -82,8 +84,8 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Button size="lg" className="w-full font-medium" asChild>
-                <Link href="#create">Create Your Logo</Link>
+              <Button size="lg" className="w-full font-medium" onClick={() => { setIsMobileMenuOpen(false); signIn() }}>
+                Sign In ECHO
               </Button>
             </nav>
           </div>
