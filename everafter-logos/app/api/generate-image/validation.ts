@@ -42,7 +42,7 @@ export function validateGenerateImageRequest(body: unknown): ValidationResult {
       return { isValid: false, error: { message: 'initials (1-6 chars) required', status: 400 } }
     }
     const validStyles = ['minimal', 'modern', 'ornate', 'vintage']
-    // @ts-expect-error runtime validation only
+
     if (!l.style || !validStyles.includes(l.style)) {
       return { isValid: false, error: { message: `style must be one of: ${validStyles.join(', ')}`, status: 400 } }
     }

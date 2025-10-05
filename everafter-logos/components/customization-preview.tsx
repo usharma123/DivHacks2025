@@ -54,6 +54,11 @@ export function CustomizationPreview() {
 
   const generate = useCallback(async () => {
     if (!isLoggedIn) return
+    // Double-check server-side session/token exists before generating
+    const authStatus = await fetch("/api/auth-status", { credentials: "include" })
+      .then(r => r.ok ? r.json() : Promise.resolve({ signedIn: false, hasToken: false }))
+      .catch(() => ({ signedIn: false, hasToken: false }))
+    if (!authStatus?.signedIn || !authStatus?.hasToken) return
     if (!initials.trim()) return
     setIsLoading(true)
     setSelectedIdx(null)
@@ -63,6 +68,7 @@ export function CustomizationPreview() {
         fetch("/api/generate-image", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({
             prompt,
             model: "gemini",
@@ -121,11 +127,17 @@ export function CustomizationPreview() {
 
   const improve = useCallback(async () => {
     if (selectedIdx == null || !improveText.trim()) return
+    // Double-check server-side session/token exists before editing
+    const authStatus = await fetch("/api/auth-status", { credentials: "include" })
+      .then(r => r.ok ? r.json() : Promise.resolve({ signedIn: false, hasToken: false }))
+      .catch(() => ({ signedIn: false, hasToken: false }))
+    if (!authStatus?.signedIn || !authStatus?.hasToken) return
     setIsLoading(true)
     try {
       const res = await fetch("/api/edit-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ prompt: improveText.trim(), imageUrls: [images[selectedIdx]], provider: "gemini" }),
       })
       if (!res.ok) throw new Error(await res.text())
