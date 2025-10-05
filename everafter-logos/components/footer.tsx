@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Linkedin } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 export function Footer() {
   const footerLinks = {
@@ -17,7 +18,10 @@ export function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="inline-block mb-4">
-              <span className="font-serif text-2xl font-semibold text-primary">EverAfter</span>
+              <span className="inline-flex items-center space-x-0.5">
+                <Image src="/my-logo.svg" alt="EverAfter logo" width={80} height={80} />
+                <span className="-ml-1.5 font-serif text-2xl font-semibold text-primary">EverAfter</span>
+              </span>
             </Link>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-sm">
               Create beautiful, personalized wedding logos in minutes. Perfect for invitations, signage, and all your

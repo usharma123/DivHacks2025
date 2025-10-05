@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 import { Menu, X, Sun, Moon } from "lucide-react"
 import { useEcho } from "@merit-systems/echo-next-sdk/client"
 import { useTheme } from "next-themes"
@@ -35,8 +36,9 @@ export function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Top-left: Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="font-serif text-2xl md:text-3xl font-semibold text-primary">EverAfter</span>
+          <Link href="/" className="flex items-center space-x-0.5">
+            <Image src="/my-logo.svg" alt="EverAfter logo" width={80} height={80} priority />
+            <span className="-ml-1.5 font-serif text-2xl md:text-3xl font-semibold text-primary">EverAfter</span>
           </Link>
 
           {/* Desktop Navigation */}
