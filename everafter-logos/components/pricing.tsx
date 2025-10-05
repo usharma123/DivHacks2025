@@ -9,7 +9,7 @@ const plans = [
     description: "Great for getting started",
     features: [
       "8 logo generations per month",
-      "PNG downloads",
+      "PNG or SVG downloads",
       "Watermark preview",
       "Basic customization",
       "Email support",
