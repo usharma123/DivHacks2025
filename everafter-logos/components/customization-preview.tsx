@@ -53,7 +53,7 @@ export function CustomizationPreview() {
   }, [initials, date, venue, styleKey, primary, accent])
 
   const generate = useCallback(async () => {
-    if (!echo.isLoggedIn) return
+    if (!isLoggedIn) return
     if (!initials.trim()) return
     setIsLoading(true)
     setSelectedIdx(null)
@@ -229,7 +229,7 @@ export function CustomizationPreview() {
               {selectedIdx != null && (
                 <div className="mt-6 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
                   <div className="flex gap-2">
-                    <Button variant="turbo" onClick={downloadPng}>Download PNG</Button>
+                    <Button variant="default" onClick={downloadPng}>Download PNG</Button>
                     <Button variant="outline" onClick={downloadSvg}>Download SVG</Button>
                   </div>
                   <div className="flex-1 md:max-w-xl flex items-center gap-2">

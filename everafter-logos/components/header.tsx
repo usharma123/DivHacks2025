@@ -9,7 +9,7 @@ import { useEcho } from "@merit-systems/echo-next-sdk/client"
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { signIn } = useEcho()
+  const { signIn, isLoggedIn } = useEcho()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,8 +55,15 @@ export function Header() {
 
           {/* Top-right: Sign In ECHO */}
           <div className="hidden md:block">
-            <Button size="sm" className="bg-black text-white hover:bg-black/90" onClick={() => signIn()}>
-              Sign In ECHO
+            <Button
+              size="sm"
+              className="bg-black text-white hover:bg-black/90"
+              onClick={() => { if (!isLoggedIn) signIn() }}
+            >
+              <span className="inline-flex items-center gap-2">
+                {isLoggedIn && <span className="inline-block size-2 rounded-full bg-green-500" aria-hidden />}
+                {isLoggedIn ? 'Signed In' : 'Sign In ECHO'}
+              </span>
             </Button>
           </div>
 
@@ -84,8 +91,15 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Button size="lg" className="w-full font-medium" onClick={() => { setIsMobileMenuOpen(false); signIn() }}>
-                Sign In ECHO
+              <Button
+                size="lg"
+                className="w-full font-medium bg-black text-white hover:bg-black/90"
+                onClick={() => { setIsMobileMenuOpen(false); if (!isLoggedIn) signIn() }}
+              >
+                <span className="inline-flex items-center gap-2">
+                  {isLoggedIn && <span className="inline-block size-2 rounded-full bg-green-500" aria-hidden />}
+                  {isLoggedIn ? 'Signed In' : 'Sign In ECHO'}
+                </span>
               </Button>
             </nav>
           </div>
