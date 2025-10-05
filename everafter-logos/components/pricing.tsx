@@ -23,7 +23,7 @@ const plans = [
     description: "Most popular – generous monthly limit",
     features: [
       "Up to 100 logo generations / month",
-      "SVG, PNG & PDF downloads",
+      "SVG or PNG downloads",
       "No watermark",
       "Full customization",
       "Commercial print license",
