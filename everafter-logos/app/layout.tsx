@@ -18,6 +18,29 @@ export const metadata: Metadata = {
   title: "EverAfter - Wedding Logo Generator",
   description: "Design your perfect wedding monogram in minutes. Personalized logos for your special day.",
   generator: "v0.app",
+  icons: {
+    icon: "/my-logo.svg",
+    shortcut: "/my-logo.svg",
+    apple: "/my-logo.png",
+  },
+  openGraph: {
+    title: "EverAfter - Wedding Logo Generator",
+    description: "Design your perfect wedding monogram in minutes. Personalized logos for your special day.",
+    images: [
+      {
+        url: "/my-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "EverAfter logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EverAfter - Wedding Logo Generator",
+    description: "Design your perfect wedding monogram in minutes. Personalized logos for your special day.",
+    images: ["/my-logo.png"],
+  },
 }
 
 export default function RootLayout({
