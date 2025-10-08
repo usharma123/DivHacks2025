@@ -11,7 +11,8 @@ import { useTheme } from "next-themes"
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { signIn, isLoggedIn } = useEcho()
+  const echo = useEcho()
+  const { signIn, isLoggedIn } = echo
   const { theme, setTheme } = useTheme()
 
   // Prompt to sign in on first visit per tab session, only if not already signed in.
@@ -132,11 +133,20 @@ export function Header() {
               <Button
                 size="sm"
                 className="bg-black text-white hover:bg-black/90"
-                onClick={() => { if (!isLoggedIn) signIn() }}
+                onClick={() => {
+                  if (isLoggedIn) {
+                    // Keep guard set so we DON'T auto-prompt immediately after sign-out
+                    try { sessionStorage.setItem('ea_prompted_signin', '1') } catch {}
+                    ;(echo as any)?.signOut?.()
+                  } else {
+                    signIn?.()
+                  }
+                }}
+                aria-label={isLoggedIn ? 'Sign out' : 'Sign in'}
               >
                 <span className="inline-flex items-center gap-2">
                   {isLoggedIn && <span className="inline-block size-2 rounded-full bg-green-500" aria-hidden />}
-                  {isLoggedIn ? 'Signed In' : 'Sign In ECHO'}
+                  {isLoggedIn ? 'Sign Out' : 'Sign In ECHO'}
                 </span>
               </Button>
             </div>
@@ -238,12 +248,22 @@ export function Header() {
                     <Button
                       size="lg"
                       className="w-full font-semibold bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:from-primary/90 hover:to-primary/80 shadow-lg hover:shadow-xl transition-all duration-200 py-4 rounded-xl"
-                      onClick={() => { setIsMobileMenuOpen(false); if (!isLoggedIn) signIn() }}
+                      onClick={() => {
+                        setIsMobileMenuOpen(false)
+                        if (isLoggedIn) {
+                          // Keep guard set so we DON'T auto-prompt immediately after sign-out
+                          try { sessionStorage.setItem('ea_prompted_signin', '1') } catch {}
+                          ;(echo as any)?.signOut?.()
+                        } else {
+                          signIn?.()
+                        }
+                      }}
+                      aria-label={isLoggedIn ? 'Sign out' : 'Sign in'}
                     >
                       <span className="inline-flex items-center gap-3">
                         {isLoggedIn && <span className="inline-block size-2 rounded-full bg-green-400 animate-pulse" aria-hidden />}
                         <span className="text-base">
-                          {isLoggedIn ? 'Signed In' : 'Sign In ECHO'}
+                          {isLoggedIn ? 'Sign Out' : 'Sign In ECHO'}
                         </span>
                         {!isLoggedIn && <span className="text-xs opacity-80">→</span>}
                       </span>
