@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -13,6 +13,30 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { signIn, isLoggedIn } = useEcho()
   const { theme, setTheme } = useTheme()
+
+  // Prompt to sign in on first visit per tab session, only if not already signed in.
+  const promptedOnceRef = useRef(false)
+  useEffect(() => {
+    if (promptedOnceRef.current) return
+    promptedOnceRef.current = true
+    const GUARD_KEY = 'ea_prompted_signin'
+    if (typeof window === 'undefined') return
+    if (sessionStorage.getItem(GUARD_KEY)) return
+
+    ;(async () => {
+      try {
+        const data = await fetch('/api/auth-status', { credentials: 'include' })
+          .then(r => (r.ok ? r.json() : { signedIn: false }))
+          .catch(() => ({ signedIn: false }))
+        if (!data?.signedIn && !isLoggedIn) {
+          sessionStorage.setItem(GUARD_KEY, '1')
+          signIn?.()
+        }
+      } catch {
+        // ignore
+      }
+    })()
+  }, [isLoggedIn, signIn])
 
   useEffect(() => {
     const handleScroll = () => {
